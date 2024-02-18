@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heart Disease Risk Prediction</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #FAFAFA;
+        }
+
+        #main-container {
+            display: flex;
+            background:#FAFAFA;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+        }
+
+        #left-side, #right-side {
+            flex: 1;
+            padding: 20px;
+
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            padding-top:10%
+        }
+        #left-side{
+         flex: 1;
+    padding: 20px;
+
+    overflow-y: auto; /* Scrollbar eklemek için */
+    max-height: 100vh;
+
+        }
+       form {
+            max-width: 60%;
+            margin: 0 auto;
+
+            padding: 20px;
+            border-radius: 10px;
+
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: #000;
+            font-weight: 400;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+            border: 1px solid #f3f3f3;
+            border-radius: 4px;
+            outline-color: #e4e6e7;
+        }
+
+        input[type="submit"] {
+             background-color: #e34b32;
+            color: white;
+            cursor: pointer;
+        }
+
+     #right-side {
+    background-color: rgb(240, 242, 246);
+    text-align: center;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+
+
+      color: #000;
+      text-align:justify;
+}
+
+        #right-side p {
+            margin-bottom: 20px;
+             font-size:20px;
+             margin-top:50px;
+             margin-left:10%;
+             margin-right:10%;
+
+        }
+
+        #right-side img {
+            width: 100%;
+            max-width: 100%; /* Fotoğrafın genişliğini ekran genişliğine sığacak şekilde ayarlar */
+            border-radius: 10px;
+        }
+
+        #svg-container {
+            width: 100%;
+            max-width: 100%;
+            margin-top:10%
+        }
+        #heart-icon img{
+         width:10%;
+         margin-top:10%;
+         margin-left:10%;
+         transform: rotate(345deg);
+        }
+
+    </style>
+</head>
+<body>
+<div id="main-container" >
+    <div id="left-side">
+        <div id="heart-icon">
+            <img src="{{ url_for('static', filename='images/heart.png') }}">
+
+        </div>
+        <h1>Heart Disease Risk Prediction</h1>
+
+        <form action="/predict" method="post">
+            <label for="Sex">Gender:</label>
+        <select name="Sex" required>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+        </select>
+          <label for="AgeCategory">Age Category:</label>
+        <select name="AgeCategory" required>
+            <option value="18-24">18-24</option>
+            <option value="25-34">25-34</option>
+            <option value="35-44">35-44</option>
+            <option value="45-54">45-54</option>
+            <option value="55-64">55-64</option>
+            <option value="65+">65+</option>
+        </select>
+        <label for="BMI">BMI:</label>
+        <input type="text" name="BMI" required>
+            <label for="PhysicalHealthDays">For how many days during the past 30 days was your mental health not good?</label>
+        <input type="text" name="PhysicalHealthDays" required>
+
+        <label for="MentalHealthDays">For how many days during the past 30 days was your physical health not good</label>
+        <input type="text" name="MentalHealthDays" required>
+
+        <label for="DifficultyWalking">Do you have serious difficulty walking or climbing stairs?</label>
+        <select name="DifficultyWalking" required>
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+        </select>
+
+            <label for="PhysicalActivities">Have you played any sports (running, biking, etc.) in the past month?</label>
+        <select name="PhysicalActivities" required>
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+        </select>
+
+
+        <label for="GeneralHealth">How can you define your general health?</label>
+        <select name="GeneralHealth" required>
+            <option value="Excellent">Excellent</option>
+            <option value="Very Good">Very Good</option>
+            <option value="Good">Good</option>
+            <option value="Fair">Fair</option>
+            <option value="Poor">Poor</option>
+        </select>
+
+        <label for="SleepHours">Sleep Hours:</label>
+        <input type="text" name="SleepHours" required>
+        <label for="SmokerStatus">Smoker Status:</label>
+        <select name="SmokerStatus" required>
+            <option value="Former smoker">Former smoker</option>
+            <option value="Never smoked">Never smoked</option>
+            <option value="Current smoker">Current smoker</option>
+        </select>
+
+        <label for="AlcoholDrinkers">Do you have more than 14 drinks of alcohol (men) or more than 7 (women) in a week?</label>
+        <select name="AlcoholDrinkers" required>
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+        </select>
+
+        <label for="HadStroke">Did you have a stroke?</label>
+        <select name="HadStroke" required>
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+        </select>
+
+
+
+        <label for="HadDiabetes">Have you ever had diabetes?</label>
+        <select name="HadDiabetes" required>
+            <option value="Yes">Yes</option>
+            <option value="No">No, borderline diabetes</option>
+            <option value="Yes(during pregnancy)">Yes (during pregnancy)</option>
+            <option value="No">No</option>
+        </select>
+
+
+
+        <label for="HadKidneyDisease">Had Kidney Disease:</label>
+        <select name="HadKidneyDisease" required>
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+        </select>
+
+        <input type="submit" value="Predict">
+
+        </form>
+    </div>
+
+    <div id="right-side">
+        <div id="svg-container">
+            <!-- SVG resminizi buraya ekleyin -->
+             <img src="{{ url_for('static', filename='images/kalp_svg.jpg') }}">
+
+        </div>
+
+        <p id="rightP">
+            You should not rely solely on this estimator to assess your health status. If you feel unwell, you should contact a healthcare professional or specialist for a more comprehensive evaluation. This model can provide a general risk estimate, but it is important to seek professional help for an accurate assessment of your personal health status.
+        </p>
+        <p>
+
+            Your Risk Score
+        </p>
+    </div>
+</div>
+</body>
+</html>
